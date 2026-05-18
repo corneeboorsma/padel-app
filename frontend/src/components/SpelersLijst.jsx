@@ -1,0 +1,68 @@
+import { apiFetch } from '../api';
+
+export default function SpelersLijst({ spelers, onVerwijder }) {
+  const handleExport = () => {
+    const base = import.meta.env.VITE_API_URL ?? '';
+    window.location.href = `${base}/api/spelers/export`;
+  };
+
+  const formatDatum = (iso) =>
+    new Date(iso).toLocaleDateString('nl-BE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+  return (
+    <div className="card">
+      <div className="table-header">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+          <h2>Inschrijvingen</h2>
+          <span className="badge">{spelers.length}</span>
+        </div>
+        {spelers.length > 0 && (
+          <button className="btn btn-success" onClick={handleExport}>
+            ↓ Export CSV
+          </button>
+        )}
+      </div>
+
+      {spelers.length === 0 ? (
+        <div className="empty-state">Nog geen inschrijvingen. Voeg de eerste speler toe!</div>
+      ) : (
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Naam</th>
+              <th>E-mail</th>
+              <th>Telefoon</th>
+              <th>Partner</th>
+              <th>Datum</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {spelers.map((s, i) => (
+              <tr key={s.id}>
+                <td className="text-muted">{i + 1}</td>
+                <td><strong>{s.naam}</strong></td>
+                <td>{s.email}</td>
+                <td>{s.telefoon || <span className="text-muted">—</span>}</td>
+                <td>
+                  {s.partner_naam ? (
+                    <span title={s.partner_email || ''}>{s.partner_naam}</span>
+                  ) : (
+                    <span className="text-muted">—</span>
+                  )}
+                </td>
+                <td className="text-muted">{formatDatum(s.created_at)}</td>
+                <td>
+                  <button className="btn btn-danger" onClick={() => onVerwijder(s.id)}>
+                    Verwijder
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  );
+}

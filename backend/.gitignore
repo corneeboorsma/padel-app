@@ -1,0 +1,4 @@
+node_modules/
+padel.json
+*.db
+.env
