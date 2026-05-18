@@ -4,8 +4,11 @@ import SpelersLijst from './components/SpelersLijst';
 import heroPadel from './assets/hero-padel.png';
 import { apiFetch } from './api';
 
+const ADMIN_WW = 'ProPadel';
+
 export default function App() {
   const [spelers, setSpelers] = useState([]);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const laadSpelers = useCallback(async () => {
     try {
@@ -25,11 +28,26 @@ export default function App() {
     laadSpelers();
   };
 
+  const handleBeheer = () => {
+    if (isAdmin) {
+      setIsAdmin(false);
+      return;
+    }
+    const invoer = window.prompt('Voer het beheerwachtwoord in:');
+    if (invoer === ADMIN_WW) setIsAdmin(true);
+    else if (invoer !== null) window.alert('Onjuist wachtwoord.');
+  };
+
   return (
     <>
       <nav className="site-nav">
         <span className="club-name">TC de Mors &nbsp;<span>|</span>&nbsp; Padel</span>
-        <span className="nav-tag">De gezelligste tennis- &amp; padelclub van Rijssen</span>
+        <div className="nav-right">
+          <span className="nav-tag">De gezelligste tennis- &amp; padelclub van Rijssen</span>
+          <button className={`btn-beheer${isAdmin ? ' active' : ''}`} onClick={handleBeheer}>
+            {isAdmin ? 'Beheer: aan' : 'Beheer'}
+          </button>
+        </div>
       </nav>
 
       <div className="page-content">
@@ -73,7 +91,7 @@ export default function App() {
         </div>
 
         <RegistratieForm onInschrijving={laadSpelers} />
-        <SpelersLijst spelers={spelers} onVerwijder={verwijderSpeler} />
+        <SpelersLijst spelers={spelers} onVerwijder={verwijderSpeler} isAdmin={isAdmin} />
       </div>
 
       <footer className="site-footer">

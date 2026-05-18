@@ -1,6 +1,6 @@
 import { apiFetch } from '../api';
 
-export default function SpelersLijst({ spelers, onVerwijder }) {
+export default function SpelersLijst({ spelers, onVerwijder, isAdmin }) {
   const handleExport = () => {
     const base = import.meta.env.VITE_API_URL ?? '';
     window.location.href = `${base}/api/spelers/export`;
@@ -16,7 +16,7 @@ export default function SpelersLijst({ spelers, onVerwijder }) {
           <h2>Inschrijvingen</h2>
           <span className="badge">{spelers.length}</span>
         </div>
-        {spelers.length > 0 && (
+        {isAdmin && spelers.length > 0 && (
           <button className="btn btn-success" onClick={handleExport}>
             ↓ Export CSV
           </button>
@@ -36,7 +36,7 @@ export default function SpelersLijst({ spelers, onVerwijder }) {
                 <th>E-mail</th>
                 <th>Telefoon</th>
                 <th>Datum</th>
-                <th></th>
+                {isAdmin && <th></th>}
               </tr>
             </thead>
             <tbody>
@@ -47,11 +47,13 @@ export default function SpelersLijst({ spelers, onVerwijder }) {
                   <td>{s.email}</td>
                   <td>{s.telefoon || <span className="text-muted">—</span>}</td>
                   <td className="text-muted">{formatDatum(s.created_at)}</td>
-                  <td>
-                    <button className="btn btn-danger" onClick={() => onVerwijder(s.id)}>
-                      Verwijder
-                    </button>
-                  </td>
+                  {isAdmin && (
+                    <td>
+                      <button className="btn btn-danger" onClick={() => onVerwijder(s.id)}>
+                        Verwijder
+                      </button>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>
@@ -64,9 +66,11 @@ export default function SpelersLijst({ spelers, onVerwijder }) {
                 <div className="mobile-card-header">
                   <span className="mobile-card-num">{i + 1}</span>
                   <strong className="mobile-card-naam">{s.naam}</strong>
-                  <button className="btn btn-danger" onClick={() => onVerwijder(s.id)}>
-                    Verwijder
-                  </button>
+                  {isAdmin && (
+                    <button className="btn btn-danger" onClick={() => onVerwijder(s.id)}>
+                      Verwijder
+                    </button>
+                  )}
                 </div>
                 <div className="mobile-card-body">
                   <span>{s.email}</span>

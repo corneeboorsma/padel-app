@@ -29,6 +29,34 @@ body {
   line-height: 1.55;
 }
 
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.btn-beheer {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.25);
+  color: #ccc;
+  border-radius: var(--radius);
+  padding: 0.3rem 0.8rem;
+  font-size: 0.75rem;
+  font-family: inherit;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.btn-beheer:hover { border-color: rgba(255,255,255,0.5); color: #fff; }
+
+.btn-beheer.active {
+  border-color: var(--green-mid);
+  color: var(--green-mid);
+}
+
 /* ── Top nav bar ─────────────────────────────────────── */
 .site-nav {
   background: var(--nav-bg);
