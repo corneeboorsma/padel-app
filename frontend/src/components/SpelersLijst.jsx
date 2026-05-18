@@ -33,8 +33,8 @@ export default function SpelersLijst({ spelers, onVerwijder, isAdmin }) {
               <tr>
                 <th>#</th>
                 <th>Naam</th>
-                <th>E-mail</th>
-                <th>Telefoon</th>
+                {isAdmin && <th>E-mail</th>}
+                {isAdmin && <th>Telefoon</th>}
                 <th>Datum</th>
                 {isAdmin && <th></th>}
               </tr>
@@ -44,8 +44,8 @@ export default function SpelersLijst({ spelers, onVerwijder, isAdmin }) {
                 <tr key={s.id}>
                   <td className="text-muted">{i + 1}</td>
                   <td><strong>{s.naam}</strong></td>
-                  <td>{s.email}</td>
-                  <td>{s.telefoon || <span className="text-muted">—</span>}</td>
+                  {isAdmin && <td>{s.email}</td>}
+                  {isAdmin && <td>{s.telefoon || <span className="text-muted">—</span>}</td>}
                   <td className="text-muted">{formatDatum(s.created_at)}</td>
                   {isAdmin && (
                     <td>
@@ -73,8 +73,8 @@ export default function SpelersLijst({ spelers, onVerwijder, isAdmin }) {
                   )}
                 </div>
                 <div className="mobile-card-body">
-                  <span>{s.email}</span>
-                  {s.telefoon && <span>{s.telefoon}</span>}
+                  {isAdmin && <span>{s.email}</span>}
+                  {isAdmin && s.telefoon && <span>{s.telefoon}</span>}
                   <span className="text-muted">{formatDatum(s.created_at)}</span>
                 </div>
               </div>
