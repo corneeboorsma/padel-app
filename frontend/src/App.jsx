@@ -4,7 +4,7 @@ import SpelersLijst from './components/SpelersLijst';
 import heroPadel from './assets/hero-padel.png';
 import { apiFetch } from './api';
 
-const ADMIN_WW = 'ProPadel';
+const ADMIN_WW = 'ProPadel123';
 
 export default function App() {
   const [spelers, setSpelers] = useState([]);
