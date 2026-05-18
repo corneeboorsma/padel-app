@@ -26,34 +26,57 @@ export default function SpelersLijst({ spelers, onVerwijder }) {
       {spelers.length === 0 ? (
         <div className="empty-state">Nog geen inschrijvingen. Voeg de eerste speler toe!</div>
       ) : (
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Naam</th>
-              <th>E-mail</th>
-              <th>Telefoon</th>
-              <th>Datum</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
+        <>
+          {/* Desktop tabel */}
+          <table className="desktop-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Naam</th>
+                <th>E-mail</th>
+                <th>Telefoon</th>
+                <th>Datum</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {spelers.map((s, i) => (
+                <tr key={s.id}>
+                  <td className="text-muted">{i + 1}</td>
+                  <td><strong>{s.naam}</strong></td>
+                  <td>{s.email}</td>
+                  <td>{s.telefoon || <span className="text-muted">—</span>}</td>
+                  <td className="text-muted">{formatDatum(s.created_at)}</td>
+                  <td>
+                    <button className="btn btn-danger" onClick={() => onVerwijder(s.id)}>
+                      Verwijder
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          {/* Mobiele kaartjes */}
+          <div className="mobile-list">
             {spelers.map((s, i) => (
-              <tr key={s.id}>
-                <td className="text-muted">{i + 1}</td>
-                <td><strong>{s.naam}</strong></td>
-                <td>{s.email}</td>
-                <td>{s.telefoon || <span className="text-muted">—</span>}</td>
-                <td className="text-muted">{formatDatum(s.created_at)}</td>
-                <td>
+              <div key={s.id} className="mobile-card">
+                <div className="mobile-card-header">
+                  <span className="mobile-card-num">{i + 1}</span>
+                  <strong className="mobile-card-naam">{s.naam}</strong>
                   <button className="btn btn-danger" onClick={() => onVerwijder(s.id)}>
                     Verwijder
                   </button>
-                </td>
-              </tr>
+                </div>
+                <div className="mobile-card-body">
+                  <span>{s.email}</span>
+                  {s.telefoon && <span>{s.telefoon}</span>}
+                  <span className="text-muted">{formatDatum(s.created_at)}</span>
+                </div>
+              </div>
             ))}
-          </tbody>
-        </table>
+          </div>
+        </>
       )}
     </div>
   );

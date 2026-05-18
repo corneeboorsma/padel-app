@@ -444,10 +444,51 @@ tbody td {
 .site-footer a:hover { text-decoration: underline; }
 
 /* ── Responsive ──────────────────────────────────────── */
+/* ── Responsive ──────────────────────────────────────── */
+.mobile-list { display: none; }
+
 @media (max-width: 600px) {
   .form-grid { grid-template-columns: 1fr; }
   .event-info { flex-direction: column; }
   .event-divider { width: 100%; height: 1px; margin: 0; }
   .hero-overlay h1 { font-size: 1.6rem; }
   .hero-banner { height: 240px; }
+
+  .desktop-table { display: none; }
+  .mobile-list { display: flex; flex-direction: column; gap: 0.75rem; }
+
+  .mobile-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .mobile-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--nav-bg);
+    padding: 0.6rem 0.75rem;
+  }
+
+  .mobile-card-num {
+    color: #777;
+    font-size: 0.78rem;
+    min-width: 1.2rem;
+  }
+
+  .mobile-card-naam {
+    color: #fff;
+    flex: 1;
+    font-size: 0.95rem;
+  }
+
+  .mobile-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0.6rem 0.75rem;
+    font-size: 0.88rem;
+    background: #fff;
+  }
 }
