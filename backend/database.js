@@ -1,30 +1,37 @@
-const low = require('lowdb');
-const FileSync = require('lowdb/adapters/FileSync');
-const path = require('path');
+const { Pool } = require('pg');
 
-const adapter = new FileSync(path.join(__dirname, 'padel.json'));
-const db = low(adapter);
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false },
+});
 
-db.defaults({ spelers: [], nextId: 1 }).write();
-
-const getAllSpelers = () => db.get('spelers').orderBy('created_at', 'desc').value();
-
-const addSpeler = ({ naam, email, telefoon }) => {
-  const id = db.get('nextId').value();
-  const speler = {
-    id,
-    naam,
-    email,
-    telefoon: telefoon || null,
-    created_at: new Date().toISOString(),
-  };
-  db.get('spelers').push(speler).write();
-  db.set('nextId', id + 1).write();
-  return speler;
+const init = async () => {
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS spelers (
+      id SERIAL PRIMARY KEY,
+      naam TEXT NOT NULL,
+      email TEXT NOT NULL,
+      telefoon TEXT,
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `);
 };
 
-const deleteSpeler = (id) => {
-  db.get('spelers').remove({ id: parseInt(id) }).write();
+const getAllSpelers = async () => {
+  const { rows } = await pool.query('SELECT * FROM spelers ORDER BY created_at DESC');
+  return rows;
 };
 
-module.exports = { getAllSpelers, addSpeler, deleteSpeler };
+const addSpeler = async ({ naam, email, telefoon }) => {
+  const { rows } = await pool.query(
+    'INSERT INTO spelers (naam, email, telefoon) VALUES ($1, $2, $3) RETURNING *',
+    [naam, email, telefoon || null]
+  );
+  return rows[0];
+};
+
+const deleteSpeler = async (id) => {
+  await pool.query('DELETE FROM spelers WHERE id = $1', [id]);
+};
+
+module.exports = { init, getAllSpelers, addSpeler, deleteSpeler };
