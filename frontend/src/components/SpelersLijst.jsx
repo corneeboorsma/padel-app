@@ -33,7 +33,6 @@ export default function SpelersLijst({ spelers, onVerwijder }) {
               <th>Naam</th>
               <th>E-mail</th>
               <th>Telefoon</th>
-              <th>Partner</th>
               <th>Datum</th>
               <th></th>
             </tr>
@@ -45,13 +44,6 @@ export default function SpelersLijst({ spelers, onVerwijder }) {
                 <td><strong>{s.naam}</strong></td>
                 <td>{s.email}</td>
                 <td>{s.telefoon || <span className="text-muted">—</span>}</td>
-                <td>
-                  {s.partner_naam ? (
-                    <span title={s.partner_email || ''}>{s.partner_naam}</span>
-                  ) : (
-                    <span className="text-muted">—</span>
-                  )}
-                </td>
                 <td className="text-muted">{formatDatum(s.created_at)}</td>
                 <td>
                   <button className="btn btn-danger" onClick={() => onVerwijder(s.id)}>

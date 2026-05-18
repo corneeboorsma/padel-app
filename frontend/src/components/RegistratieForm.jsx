@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { apiFetch } from '../api';
 
-const leeg = { naam: '', email: '', telefoon: '', partner_naam: '', partner_email: '' };
+const leeg = { naam: '', email: '', telefoon: '' };
 
 export default function RegistratieForm({ onInschrijving }) {
   const [form, setForm] = useState(leeg);
@@ -45,7 +45,6 @@ export default function RegistratieForm({ onInschrijving }) {
       <h2>Nieuwe inschrijving</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-grid">
-          <span className="section-label">Speler</span>
           <div className="form-group">
             <label htmlFor="naam">Naam *</label>
             <input id="naam" name="naam" value={form.naam} onChange={handleChange} placeholder="Voor- en achternaam" />
@@ -57,18 +56,6 @@ export default function RegistratieForm({ onInschrijving }) {
           <div className="form-group">
             <label htmlFor="telefoon">Telefoon</label>
             <input id="telefoon" name="telefoon" value={form.telefoon} onChange={handleChange} placeholder="+32 4xx xx xx xx" />
-          </div>
-
-          <hr className="divider" />
-          <span className="section-label">Partner (optioneel)</span>
-
-          <div className="form-group">
-            <label htmlFor="partner_naam">Naam partner</label>
-            <input id="partner_naam" name="partner_naam" value={form.partner_naam} onChange={handleChange} placeholder="Voor- en achternaam" />
-          </div>
-          <div className="form-group">
-            <label htmlFor="partner_email">E-mail partner</label>
-            <input id="partner_email" name="partner_email" type="email" value={form.partner_email} onChange={handleChange} placeholder="partner@voorbeeld.be" />
           </div>
         </div>
 

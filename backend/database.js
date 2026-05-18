@@ -9,15 +9,13 @@ db.defaults({ spelers: [], nextId: 1 }).write();
 
 const getAllSpelers = () => db.get('spelers').orderBy('created_at', 'desc').value();
 
-const addSpeler = ({ naam, email, telefoon, partner_naam, partner_email }) => {
+const addSpeler = ({ naam, email, telefoon }) => {
   const id = db.get('nextId').value();
   const speler = {
     id,
     naam,
     email,
     telefoon: telefoon || null,
-    partner_naam: partner_naam || null,
-    partner_email: partner_email || null,
     created_at: new Date().toISOString(),
   };
   db.get('spelers').push(speler).write();

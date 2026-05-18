@@ -19,11 +19,11 @@ app.get('/api/spelers', (req, res) => {
 });
 
 app.post('/api/spelers', (req, res) => {
-  const { naam, email, telefoon, partner_naam, partner_email } = req.body;
+  const { naam, email, telefoon } = req.body;
   if (!naam || !email) {
     return res.status(400).json({ error: 'Naam en e-mail zijn verplicht.' });
   }
-  const result = addSpeler({ naam, email, telefoon: telefoon || null, partner_naam: partner_naam || null, partner_email: partner_email || null });
+  const result = addSpeler({ naam, email, telefoon: telefoon || null });
   res.status(201).json({ id: result.lastInsertRowid });
 });
 
@@ -39,8 +39,6 @@ app.get('/api/spelers/export', (req, res) => {
     { label: 'Naam', value: 'naam' },
     { label: 'E-mail', value: 'email' },
     { label: 'Telefoon', value: 'telefoon' },
-    { label: 'Partner naam', value: 'partner_naam' },
-    { label: 'Partner e-mail', value: 'partner_email' },
     { label: 'Inschrijfdatum', value: 'created_at' },
   ];
   const parser = new Parser({ fields });
